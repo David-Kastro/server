@@ -1,0 +1,40 @@
+## Adaptação do servidor REST para GraphQL usando Apollov2 ##
+
+------------------------ Adaptação ---------------------------
+
+[X] Reavaliar Estrutura atual da arquitetura.
+[X] Reeogarnizar as pastas e usar uma nomeação diferente.
+[X] Remover Express da aplicação.
+[X] Remover Services.
+[X] Schemas e resolvers para Usuario.
+[X] Ao invés de usar middleware para autenticação, usar "context" do Apollov2.
+[X] Rotinas de email e recuperação de senha.
+[X] implementar jwt usando context do apollo.
+[X] criar resolvers "privados", que fazem a verificação do token a partir do context | resolvers recebem 3 argumentos -> (parent, args, context)
+[X] separar Schemas(typeDefs) de Resolvers para cada modulo.
+[X] adaptar loader para a nova organização.
+[X] Criar Directive para token, em AuthResponse ( atualmente usando um resolver para criar token )
+[] Migrar serviço de autenticação para AWS Cognito.
+[] Testar o timezone da aplicação.
+
+---------------------- Links ---------------------------
+
+
+
+---------------------- Produção ---------------------------
+
+[] Configurações para deployment( prod ), como: firewall, middleware, vpn e etc.
+[] Utilizar ferramenta para envio de emails reais (sparkpost, mailchimp e etc...).
+
+---------------------- Futuro ---------------------------
+[] Criar tabela apenas para os tokens de troca de senha.
+[] Retrabalhar Emails.
+[] Retrabalhar Emails de recuperação de senha.
+[!] Migrar para uma arquitetura usando Nest.js e TypeScript.
+
+#### LABELS
+
+[!] -> hold
+[X] -> done
+[%] -> inProgress
+[*] -> urgent
