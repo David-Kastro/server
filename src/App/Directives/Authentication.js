@@ -9,20 +9,20 @@ const {
 class AuthDirective extends SchemaDirectiveVisitor {
 
     visitObject( type ) {
-      
-      this.ensureFieldsWrapped( type );
+
       type._requiredAuthRole = this.args.requires;
+      this.ensureFieldsWrapped( type, 'object' );
 
     }
   
     visitFieldDefinition( field, details ) {
-      
-      this.ensureFieldsWrapped( details.objectType );
+    
       field._requiredAuthRole = this.args.requires;
+      this.ensureFieldsWrapped( details.objectType, 'field' );
 
     }
   
-    ensureFieldsWrapped( objectType ) {
+    ensureFieldsWrapped( objectType, schemaType ) {
       
       // Mark the GraphQLObjectType object to avoid re-wrapping:
       if ( objectType._authFieldsWrapped ) {
@@ -32,23 +32,32 @@ class AuthDirective extends SchemaDirectiveVisitor {
       objectType._authFieldsWrapped = true;
   
       const fields      = objectType.getFields();
-  
+      
       Object.keys( fields ).forEach( fieldName => {
 
         const field     = fields[ fieldName ];
-        const { resolve = defaultFieldResolver } = field;
-  
+        const { resolve = defaultFieldResolver, astNode } = field;
+
+        const fildHasAuthDirective = astNode
+          .directives
+          .filter( directive => directive.kind === "Directive" && directive.name.value === 'auth' )
+          .length > 0 || schemaType === 'object';
+        
         field.resolve   = async function( ...args ) {
   
           const context = args[2];
           const user    = context.loggedUser;
+
+          if( !fildHasAuthDirective ) {
+            return resolve.apply( this, args );
+          }
 
           if( !user ) {
             throw AuthenticationError();
           }
 
           const requiredRole = field._requiredAuthRole || objectType._requiredAuthRole;
-          
+
           if ( !requiredRole ) {
             return resolve.apply( this, args );
           }
