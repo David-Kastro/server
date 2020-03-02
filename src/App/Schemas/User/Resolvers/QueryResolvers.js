@@ -2,11 +2,11 @@
  * Query Resolvers.
  */
 
-const User  = require( '../../../../Models/User' );
+const User  = require( '../../../Models/User' );
 
 const { 
     UserNotFound,  
-} = require( '../../../../Errors' );
+} = require( '../../../Errors' );
 
 const resolvers = {
 

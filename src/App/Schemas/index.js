@@ -14,14 +14,28 @@ const getFoldersInDirectory = directory => {
 
 }
 
+// Checks if directory is a folder.
+const directoryIsFolder = directoryPath => {
+    
+    return fs
+        .lstatSync( directoryPath )
+        .isDirectory();
+
+}
+
 // Get the resolvers of a directory
 const getResolversInDirectory = directory => {
 
-    return fs
+    const allResolvers = fs
         .readdirSync( directory )
-        .filter( content   => directoryIsFolder( path.resolve( directory, content ) ) )
-        .map( resolverType => require( path.resolve( directory, resolverType, 'resolvers.js' ) ).resolvers )
-        
+        .filter( file  => file.endsWith('Resolvers.js') )
+        .map( resolver => require( path.resolve( directory, resolver ) ).resolvers );
+    
+    if( !allResolvers.length ) {
+        return {}
+    }
+
+    return allResolvers
         .reduce( ( allResolversInDirectory, currentResolvers ) => {
 
             for( let i in currentResolvers ) {
@@ -30,15 +44,6 @@ const getResolversInDirectory = directory => {
 
             return allResolversInDirectory;
         });
-}
-
-// Checks if directory is a folder.
-const directoryIsFolder = directory => {
-    
-    return fs
-        .lstatSync( directory )
-        .isDirectory();
-
 }
 
 const typeDefs  = getFoldersInDirectory( __dirname )

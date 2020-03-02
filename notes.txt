@@ -1,6 +1,0 @@
-as paginas no front sempre recebera, apos autenticação, as informações do usuarios ou ao menos o token. 
-Logo, as requisições feitas ao servidor deverão possuir o header: "Authorization" e o token como value.
-
-A autenticação com jwt ocorrerá diferente com o graphQL. Ele estará sempre checando se um autorization esta sendo enviado.
-Caso haja um autorization e o token seja valido, ele ira guardar o usuario no contexto. caso queiramos bloquear acesso de usuarios
-nao autenticados, iremos verificar se há um usuário salvo no context.

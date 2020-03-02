@@ -5,8 +5,8 @@
 const { ApolloError } = require( 'apollo-server' );
 const bcrypt          = require( 'bcryptjs' );
 const crypto          = require( 'crypto' );
-const mailer          = require( '../../../../../Services/modules/mailer' );
-const User            = require( '../../../../Models/User' );
+const mailer          = require( '../../../../Services/modules/mailer' );
+const User            = require( '../../../Models/User' );
 
 const { 
     ServiceError,
@@ -16,7 +16,7 @@ const {
     RegistrationError,
     EmailError,
     TokenError,
-} = require( '../../../../Errors' );
+} = require( '../../../Errors' );
 
 const resolvers = {
 
