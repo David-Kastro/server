@@ -1,29 +1,28 @@
-const { ApolloServer }         = require( 'apollo-server' );
-const { typeDefs, resolvers }  = require( './App/Schemas' );
-const { AuthDirective }        = require( './App/Directives/Authentication' );
-const { TokenDirective }       = require( './App/Directives/Token' );
+const { ApolloServer } = require('apollo-server');
+const { typeDefs, resolvers } = require('./App/Schemas');
+const { AuthDirective } = require('./App/Directives/Authentication');
+const { TokenDirective } = require('./App/Directives/Token');
 
 // Middlewares
-const TokenValidation          = require( './App/Middlewares/TokenValidation' );
+const TokenValidation = require('./App/Middlewares/TokenValidation');
 
 const server = new ApolloServer({
+  typeDefs,
+  resolvers,
 
-    typeDefs,
-    resolvers,
-    
-    schemaDirectives: {
-        auth: AuthDirective,
-        createToken: TokenDirective,
-    },
+  schemaDirectives: {
+    auth: AuthDirective,
+    createToken: TokenDirective
+  },
 
-    context: ({ req }) => {
+  context: ({ req }) => {
+    const token = req.headers.authorization || null;
+    const loggedUser = TokenValidation(token);
 
-        const token      = req.headers.authorization || null;
-        const loggedUser = TokenValidation( token );
-        
-        return { loggedUser };
-    },
-    
+    return { loggedUser };
+  }
 });
 
-server.listen().then( ({ url }) => console.log( `Apollo server listening on ${url}` ) );
+server
+  .listen()
+  .then(({ url }) => console.log(`Apollo server listening on ${url}`));
