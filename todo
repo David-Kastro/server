@@ -14,7 +14,7 @@
 [X] separar Schemas(typeDefs) de Resolvers para cada modulo.
 [X] adaptar loader para a nova organização.
 [X] Criar Directive para token, em AuthResponse ( atualmente usando um resolver para criar token )
-[] Migrar serviço de autenticação para AWS Cognito.
+[!] Criar serviço de autenticação.
 [] Testar o timezone da aplicação.
 
 ---------------------- Links ---------------------------
